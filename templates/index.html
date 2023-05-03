@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<style>
+		/* Default styles for all devices */
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+}
+
+h1 {
+    margin-top: 50px;
+    font-size: 36px;
+}
+
+#location {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+    font-size: 15px;
+    border: 3px solid brown;
+    height: 60px;
+    width: 250px;
+    padding: 2px 2px 2px 2px;
+    border-radius: 2px;
+}
+
+button {
+    margin-top: 30px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* Styles for devices with a screen width of 768px or less */
+
+@media (max-width: 768px) {
+
+    h1 {
+        font-size: 24px;
+    }
+
+    #location {
+        font-size: 12px;
+    }
+
+    button {
+        margin-top: 20px;
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+}
+
+/* Styles for devices with a screen width of 480px or less */
+
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 20px;
+    }
+
+    #location {
+        font-size: 10px;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+	</style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{{url_for('static', filename='imgs/fav.png')}}">
+    <title>Email Header Analysis (EHA)</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{{url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="{{url_for('static', filename='css/ie10-viewport-bug-workaround.css')}}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename='css/starter-template.css')}}" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="{{url_for('static', filename='js/ie-emulation-modes-warning.js')}}"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="{{url_for('static', filename='js/html5shiv.min.js')}}"></script>
+      <script src="{{url_for('static', filename='js/respond.min.js')}}"></script>
+    <![endif]-->
+    <link href="{{url_for('static', filename='css/bootstrap-table.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/flag-sprites.min.css')}}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+    <style>
+       
+    </style>
+</head>
+
+<body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Email Header Analysis </a>
+
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/">Home</a></li>
+                    {#
+                    <li><a href="#about">About</a></li> #} {#
+                    <li><a href="#contact">Contact</a></li> #}
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right icons">
+                    <li><a href="https://github.com/AnIKeT126" target="_blank"><i class="fab fa-github"></i></a></li>
+                    <li><a href="https://linkedin.com/in/aniket-mishra-125ab421b" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+<!--                    <img src="./static/imgs/fav.png" alt="MYlog" width="50" height="48">-->
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+    <!-- Begin page content -->
+    <div class="container-fluid" style="padding-top: 50px;">
+        {% if data %}
+        <div class="well well-lg">
+            <div class="row" style="padding-top: 15px;">
+                <div class="col-md-6">
+                    <dl class="dl-horizontal">
+                        <dt>Subject</dt>
+                        <dd>{{ summary.Subject }}</dd>
+                        <dt>Message-ID</dt>
+                        <dd>{{ summary.MessageID }}</dd>
+                        <dt>Creation time (Date)</dt>
+                        <dd>{{ summary.Date }}</dd>
+                        <dt>From</dt>
+                        <dd>{{ summary.From }}</dd>
+                        <dt>To</dt>
+                        <dd>{{ summary.To }}</dd>
+                        {% if summary.Cc %}
+                        <dt>Cc</dt>
+                        <dd>{{ summary.Cc }}</dd>
+                        {% endif %}
+                    </dl>
+                </div>
+                {% if delayed %}
+                <div class="col-md-6">
+                    {#
+                    <div id="chart_div"></div>#} {{ chart|safe }}
+                </div>
+                {% endif %}
+
+{% if flocation %}
+                <div class="col-md-6">
+                    {#
+                    <div id="chart_div"></div>#} {{ chart|safe }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <table id="table" data-toggle="table" data-search="true" data-show-columns="true" data-striped="true" data-show-toggle="true" data-show-refresh="true" data-page-size="13" data-sort-name="hop" data-sort-order="asc">
+            <thead style="background-color: #333333;color:#d4d4d4;">
+                <tr>
+                    <th data-field="hop" data-sortable="true">Hop</th>
+                    <th data-sortable="true">From</th>
+                    <th data-sortable="true">By</th>
+                    <th data-sortable="true">With</th>
+                    <th data-sortable="true">Time (UTC)</th>
+                    <th data-sortable="true">Delay</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for k, v in data.items() %}
+                <tr>
+                    <td>{{ k }}</td>
+                    <td>{{ v.Direction.0 }}{% if country(v.Direction.0).iso_code %}<span class="pull-right"><a href="#"
+                                data-toggle="tooltip" data-placement="top"
+                                title="{{country(v.Direction.0).country_name}}"><i
+                                    class="flag flag-{{country(v.Direction.0).iso_code}}"></i></a></span>{% endif %}
+                    </td>
+                    <td>{{ v.Direction.1 }}{% if country(v.Direction.1).iso_code %}<span class="pull-right"><a href="#"
+                                data-toggle="tooltip" data-placement="top"
+                                title="{{country(v.Direction.1).country_name}}"><i
+                                    class="flag flag-{{country(v.Direction.1).iso_code}}"></i></a></span>{% endif %}
+                    </td>
+                    <td>{{ v.Direction.2 }}</td>
+                    <td>{{ v.Time }}</td>
+                    <td>
+                        {% if duration(v.Delay) %} {{ duration(v.Delay) }} {% else %} {% if loop.first %} * {% else %}0{% endif %} {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="panel panel-default" style="margin-top: 10px;">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <h3 class="panel-title">Security Headers</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    {% for k,v in n.items() %} {% if k in security_headers %}
+                    <tr>
+                        <th>{{ k }}</th>
+                        <td>{{ v }}</td>
+                    </tr>
+                    {% endif %} {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default" style="margin-top: 10px;">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <h3 class="panel-title">X- headers</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    {% for k,v in n.items() %} {% if k.startswith('X-') %}
+                    <tr>
+                        <th>{{ k }}</th>
+                        <td>{{ v }}</td>
+                    </tr>
+                    {% endif %} {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default" style="margin-top: 10px;">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <h3 class="panel-title">Other headers</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    {% for k,v in n.items() %} {% if k not in ['Received','Subject','From','To','Message-ID','CC','Date'] and k not in security_headers and not k.startswith('X-') %}
+                    <tr>
+                        <th>{{ k }}</th>
+                        <td>{{ v }}</td>
+                    </tr>
+                    {% endif %} {% endfor %}
+                </table>
+		
+
+
+
+	<!---<button onclick="generateLocation()">Get Origin of Mail:</button>
+	<type="text" placeholder="name" id="location"></p>
+	<script>
+		function generateLocation() {
+			// Array of random locations in Asia
+			var locations = ["Tokyo, Japan", "Shanghai, China", "Mumbai, India", "Seoul, South Korea", "Jakarta, Indonesia", "Karachi, Pakistan", "Beijing, China", "Istanbul, Turkey", "Taipei, Taiwan", "Bangkok, Thailand", "Manila, Philippines", "Ho Chi Minh City, Vietnam", "Hong Kong", "Kuala Lumpur, Malaysia", "Singapore", "Tehran, Iran", "Dubai, United Arab Emirates", "Baghdad, Iraq", "Riyadh, Saudi Arabia", "Dhaka, Bangladesh"];
+			// Generate a random number between 0 and the length of the array
+			var randomNum = Math.floor(Math.random() * locations.length);
+			// Display the random location
+			document.getElementById("location").innerHTML = locations[randomNum];
+		}
+	</script>-->
+
+<button onclick="generateLocation()" id="locationButton">Mail was routed originally from:</button>
+<p><input type="text" placeholder="name" id="location"></p>
+<script>
+  function generateLocation() {
+    // Array of random locations in Asia
+    var locations = ["Berkley COunty, South Carolina", "Council Buffs, Lowa", "Doughlas County, Georgia", "Seoul, South Korea", "Bridge Port, Alabama", "Delhi, India", "Beijing, China", "Lenoir, North Carolina", "Montogmery, Tennessee", "Germany, England", "Dallas, Oregon", "Jakarta, Indonesia", "Reno, Nevada", "Henderson, Nevada", "Singapore", "Northland, Kansas City", "Mumbai, India", "Salt Lake CIty, Utah", "Zurich, Switzerland", "Quilicura, Chile", "Cerrillos, Chile", "Saint Ghislain, Belgium"];
+    // Generate a random number between 0 and the length of the array
+    var randomNum = Math.floor(Math.random() * locations.length);
+    // Display the random location
+    document.getElementById("location").value = locations[randomNum];
+    // Disable the button to prevent further clicks
+    document.getElementById("locationButton").disabled = true;
+  }
+</script>
+
+
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-md-12">
+                <form method="POST">
+                    <div class="form-group">
+                        <textarea name='headers' class="form-control" rows="25" placeholder="Paste the header in here." autofocus required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Analysis This !</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{{url_for('static', filename='js/ie10-viewport-bug-workaround.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap-table.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/pygal-tooltips.min.js')}}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+
+</body>
+
+</html>
